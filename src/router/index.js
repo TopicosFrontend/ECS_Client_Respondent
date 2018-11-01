@@ -13,9 +13,10 @@ export default new Router({
       component: ECSRespondent
     },
     {
-      path: '/FormRespondent',
+      path: '/FormRespondent/:cfn/:ecn',
       name: 'FormRespondent',
-      component: FormRespondent
+      component: FormRespondent,
+      props: true
     }
   ]
 })
