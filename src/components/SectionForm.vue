@@ -5,9 +5,9 @@
                 <div class="container cardLogin">
                     <div class="row">
                         <div class="col">
-                            <h5 v-text="parameters.title"></h5>
-                            <br />
-                            <p v-text="parameters.description" class="textAlignLeft"></p>
+                            <h5 v-if="parameters.title !== undefined" v-text="parameters.title"></h5>
+                            <br v-if="parameters.description !== undefined" />
+                            <p v-if="parameters.description !== undefined" v-text="parameters.description" class="textAlignLeft"></p>
                             <hr />
                         </div>
                     </div>
@@ -31,8 +31,8 @@
                                         
                                     </div>
                                 </div>
-                                <button @click="acton_event_aux" v-if="parameters.button_aux !== undefined && parameters.button_aux.active" class="btn btn-primary" v-text="parameters.button_aux.textButton"></button>
-                                <button @click="acton_event" v-if="parameters.button !== undefined && parameters.button.active" class="btn btn-primary" v-text="parameters.button.textButton"></button>
+                                <button @click="acton_event_aux" v-if="parameters.button_aux !== undefined && parameters.button_aux.active" class="btn btn-secondary" v-text="parameters.button_aux.textButton"></button>
+                                <button @click="acton_event" v-if="parameters.button !== undefined && parameters.button.active" class="btn btn-secondary" v-text="parameters.button.textButton"></button>
                             </form>
                             <hr />
                         </div>
@@ -179,5 +179,8 @@ export default {
 }
 .inputOption{
     padding-left: 1.5rem;
+}
+.cardSectionForm{
+    margin-bottom: 1em;
 }
 </style>

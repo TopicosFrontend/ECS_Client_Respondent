@@ -50,19 +50,22 @@ export default {
     },
     methods:{
         eventFormLogin: function(msg){
+            if (msg.cfn === "" || msg.ecn == "") {
+                alert("Ingrese los dos codigos");
+                return;
+            }
             let req = "cfn="+msg.cfn+"&ecn="+msg.ecn;
-            /*let headers = { headers: { 'Content-type': 'application/json'}};*/
-            /*this.$router.push({path: "/FormRespondent/"+msg.cfn+"/"+msg.ecn, props: true});*/
-            axios.post(process.env.ROOT_API + "/user/login/", req).then(response => {/*{state: Boolean, msg: String}*/
-                if (response.state == true) {
+            this.$router.push({path: "/FormRespondent/"+msg.cfn+"/"+msg.ecn, props: true});
+            /*axios.post(process.env.ROOT_API + "/user/login/", req).then(response => {/*{state: Boolean, msg: String}*/
+                /*if (response.state == true) {
                     this.$router.push({path: "/FormRespondent/"+msg.cfn+"/"+msg.ecn, props: true});
                 }else{
-                    alert(response.msg)
+                    alert(response.data.msg)
                 }
             }).catch(err => {
                 console.log(err);
                 alert("Se produjo un error, vuelve a intentarlo más tarde");
-            });
+            });*/
             
         }
     }
