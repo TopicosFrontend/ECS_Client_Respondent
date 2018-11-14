@@ -49,7 +49,7 @@
         
         <button class="btn btn-primary" @click="send_form">Guardar</button>
         <button class="btn btn-success" @click="finish_form">Terminar censo</button>
-        <button v-if="is_census_nigth" class="btn btn-success" @click="confirm_form">Confirmar</button>
+        <button v-if="is_census_nigth" class="btn btn-success" @click="finish_form">Confirmar</button>
     </div>
 </template>
 
@@ -68,32 +68,28 @@ export default {
             title: undefined, 
             date_form: undefined,
             index_section: 0,
-            is_census_nigth: false
+            is_census_nigth: false,
+            answers_form: undefined
         }
     },
     components: {
         SectionForm
     },
     mounted(){
-        let req = {cfn: this.cfn, ecn: this.ecn};
+        //let req = {cfn: this.cfn, ecn: this.ecn};
         let headers = { headers: { 'Content-type': 'application/json'}};
-        this.init_form(formulario);
-        
-        /*{state:Boolean, msg: String, form: Form}*/
-        /*axios.get(process.env.ROOT_API + "/user/login/", req, headers).then(response => {
-            let is_correct_response;
-            if (response.state == true) {
-                is_correct_response = this.init_form(response.form);
-                if(!is_correct_response){
-                    alert("Se produjo un error, vuelve a intentarlo más tarde");
-                }
+        axios.get(process.env.ROOT_API + "/user/get_form/"+this.cfn+"/"+this.ecn).then(response => {/*{state: Boolean, msg: String, form: Answers}*/
+            if (response.data.state == true) {
+                this.answers_form = response.data.form;
+                this.init_form(formulario);
             }else{
-                alert(response.msg)
+                alert(response.data.msg)
+                this.$router.push({path: "/"});
             }
         }).catch(err => {
             console.log(err);
-            alert("Se produjo un error, vuelve a intentarlo más tarde");
-        });*/
+        });
+
         /*axios.get(process.env.ROOT_API + "/user/is_census_nigth/").then(response => {/*{state: Boolean, msg: String, is_census_nigth: String}*/
             /*if (response.state == true) {
                 this.is_census_nigth = response.is_census_nigth;
@@ -131,14 +127,14 @@ export default {
                         this.sections_user[i]["inputs"][j]["type"] = "text";
                         this.sections_user[i]["inputs"][j]["active"] = true;
                         this.sections_user[i]["inputs"][j]["id"] = "input-"+j;
-                        this.sections_user[i]["inputs"][j]["res"] = "";
+                        this.sections_user[i]["inputs"][j]["res"] = this.answers_form[i][j].answer;
                     } else {
                         this.sections_user[i]["inputs"][j]["label"] = element.enunciado;
                         this.sections_user[i]["inputs"][j]["type"] = "radio";
                         this.sections_user[i]["inputs"][j]["active"] = true;
                         this.sections_user[i]["inputs"][j]["id"] = "input-"+j;
                         this.sections_user[i]["inputs"][j]["options"] = [];
-                        this.sections_user[i]["inputs"][j]["res"] = element.respuesta;
+                        this.sections_user[i]["inputs"][j]["res"] = this.answers_form[i][j].answer;
                         for (let z = 0; z < element.opciones.length; z++) {
                             this.sections_user[i]["inputs"][j]["options"][z] = {};
                             this.sections_user[i]["inputs"][j]["options"][z]["value"] = element.opciones[z];
@@ -198,19 +194,6 @@ export default {
                     alert("Ha finalizado el censo correctamente, recuerde confirmar la última noche");
                 }else{
                     alert(response.data.msg)
-                }
-            }).catch(err => {
-                console.log(err);
-                alert("Se produjo un error, vuelve a intentarlo más tarde");
-            });
-        },
-        confirm_form: function(){
-            axios.post(process.env.ROOT_API + "/user/confirm_form/").then(response => {/*{state: Boolean, msg: String}*/
-                let is_correct_response;
-                if (response.state == true) {
-                    alert("Se ha confirmado con exito");
-                }else{
-                    alert(response.msg)
                 }
             }).catch(err => {
                 console.log(err);
