@@ -55,7 +55,17 @@ export default {
                 return;
             }
             let req = "cfn="+msg.cfn+"&ecn="+msg.ecn;
-            this.$router.push({path: "/FormRespondent/"+msg.cfn+"/"+msg.ecn, props: true});
+            axios.get(process.env.ROOT_API + "/user/is_valid_code/"+msg.cfn+"/"+msg.ecn).then(response => {
+                if (response.data.state == true) {
+                    this.$router.push({path: "/FormRespondent/"+msg.cfn+"/"+msg.ecn, props: true});
+                }else{
+                    alert(response.data.msg)
+                }
+            }).catch(err => {
+                alert("Error al intentar conectarse con el servidor, intente mas tarde");
+                console.log(err);
+            })
+            
         }
     }
 }
