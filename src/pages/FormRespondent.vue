@@ -49,7 +49,7 @@
         
         <button class="btn btn-primary" @click="send_form">Guardar</button>
         <button class="btn btn-success" @click="finish_form">Terminar censo</button>
-        <button v-if="is_census_nigth" class="btn btn-success" @click="finish_form">Confirmar</button>
+        <button v-if="is_census_nigth" class="btn btn-success" @click="finish_form">Confirmar censo</button>
     </div>
 </template>
 
@@ -90,15 +90,16 @@ export default {
             console.log(err);
         });
 
-        /*axios.get(process.env.ROOT_API + "/user/is_census_nigth/").then(response => {/*{state: Boolean, msg: String, is_census_nigth: String}*/
-            /*if (response.state == true) {
-                this.is_census_nigth = response.is_census_nigth;
+        axios.get(process.env.ROOT_API + "/user/is_census_nigth/").then(response => {/*{state: Boolean, msg: String, is_census_nigth: String}*/
+            if (response.data.state == true) {
+                this.is_census_nigth = response.data.is_census_nigth;
             }else{
-                alert(response.msg)
+                alert(response.data.msg)
             }
         }).catch(err => {
+            alert("Error en la conexion con el servidor, intente mas tarde");
             console.log(err);
-        });*/
+        });
     },
     methods: {
         init_form: function(form){
