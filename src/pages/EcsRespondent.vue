@@ -51,7 +51,7 @@ export default {
     methods:{
         eventFormLogin: function(msg){
             if (msg.cfn === "" || msg.ecn == "") {
-                alert("Ingrese los dos codigos");
+                alert("Ingrese los dos códigos");
                 return;
             }
             let req = "cfn="+msg.cfn+"&ecn="+msg.ecn;
